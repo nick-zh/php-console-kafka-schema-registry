@@ -1,0 +1,7 @@
+.idea/
+.DS_Store
+vendor/
+build/
+composer.lock
+.phpunit.result.cache
+docker/kafka
