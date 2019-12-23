@@ -1,11 +1,12 @@
 .PHONY: clean fix-code-style test coverage install-dependencies code-style static-analysis xdebug-disable xdebug-enable update-dependencies
 .DEFAULT_GOAL := test
 
+INFECTION = ./vendor/bin/infection
 PHPDBG = phpdbg -qrr ./vendor/bin/phpunit -c ./phpunit.xml
 PHPUNIT = ./vendor/bin/phpunit -c ./phpunit.xml
 PHPSTAN = ./vendor/bin/phpstan analyse src --level=7
-PHPCS = ./vendor/bin/phpcs --extensions=php -v
-PHPCBF = ./vendor/bin/phpcbf ./src --extensions=php -v
+PHPCS = ./vendor/bin/phpcs
+PHPCBF = ./vendor/bin/phpcbf ./src --standard=PSR12
 
 clean:
 	rm -rf ./vendor
@@ -34,7 +35,12 @@ test:
 	${PHPUNIT}
 
 coverage:
-	${PHPDBG} && ./vendor/bin/coverage-check build/logs/phpunit/clover.xml 100
+	${PHPDBG} && ./vendor/bin/coverage-check build/logs/phpunit/coverage/coverage.xml 100
+
+infection-testing:
+	make coverage
+	cp -f build/logs/phpunit/junit.xml build/logs/phpunit/coverage/junit.xml
+	${INFECTION} --coverage=build/logs/phpunit/coverage --min-msi=65 --threads=`nproc`
 
 install-dependencies:
 	composer install

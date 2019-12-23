@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  ci-caching: jobcloud/ci-caching@0.5
+  ci-caching: jobcloud/ci-caching@0.6
   ci-php: jobcloud/ci-php@0.5
 
 workflows:
@@ -27,5 +27,11 @@ workflows:
       - ci-php/static-analysis:
           dockerComposeFile: "./docker/docker-compose.yml"
           dependencyCheckSumFile: "./composer.json"
+          requires:
+            - ci-php/install-dependencies
+      - ci-php/infection-testing:
+          dockerComposeFile: "./docker/docker-compose.yml"
+          dependencyCheckSumFile: "./composer.json"
+          minMsi: 82
           requires:
             - ci-php/install-dependencies
