@@ -40,7 +40,7 @@ class GetLatestSchemaCommand extends AbstractSchemaCommand
         $schemaName = $input->getArgument('schemaName');
 
         try {
-            $schema = $this->schemaRegistryApi->getSchemaByVersion($schemaName, VERSION_LATEST);
+            $schema = $this->schemaRegistryApi->getSchemaDefinitionByVersion($schemaName, VERSION_LATEST);
         } catch (ClientException $e) {
             if ($e->getCode() !== 404) {
                 throw $e;
@@ -54,7 +54,7 @@ class GetLatestSchemaCommand extends AbstractSchemaCommand
         $outputFile = $input->getArgument('outputFile');
 
         try {
-            file_put_contents($outputFile, $schema);
+            file_put_contents($outputFile, json_encode($schema, JSON_THROW_ON_ERROR));
         } catch (Throwable $e) {
             $output->writeln(sprintf('Was unable to write schema to %s.', $outputFile));
             return 1;

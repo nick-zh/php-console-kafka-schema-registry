@@ -43,13 +43,10 @@ class GetSchemaByVersionCommand extends AbstractSchemaCommand
         /** @var string $schemaVersion */
         $schemaVersion = $input->getArgument('schemaVersion');
 
-        $schema = $this->schemaRegistryApi->getSchemaByVersion(
-            $schemaName,
-            $schemaVersion,
-        );
+        $schema = $this->schemaRegistryApi->getSchemaDefinitionByVersion($schemaName, $schemaVersion);
 
         try {
-            file_put_contents($outputFile, $schema);
+            file_put_contents($outputFile, json_encode($schema, JSON_THROW_ON_ERROR));
         } catch (Throwable $e) {
             $output->writeln(sprintf('Was unable to write schema to %s.', $outputFile));
             return 1;

@@ -5,13 +5,13 @@ namespace Jobcloud\SchemaConsole\Command;
 use AvroSchema;
 use AvroSchemaParseException;
 use GuzzleHttp\Exception\RequestException;
+use Jobcloud\Kafka\SchemaRegistryClient\Exception\SubjectNotFoundException;
+use Jobcloud\Kafka\SchemaRegistryClient\KafkaSchemaRegistryApiClientInterface;
 use Jobcloud\SchemaConsole\Helper\SchemaFileHelper;
-use Jobcloud\SchemaConsole\SchemaRegistryApi;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Throwable;
 
 class RegisterChangedSchemasCommand extends AbstractSchemaCommand
 {
@@ -27,10 +27,10 @@ class RegisterChangedSchemasCommand extends AbstractSchemaCommand
     private $abortRegister = false;
 
     /**
-     * @param SchemaRegistryApi $schemaRegistryApi
+     * @param KafkaSchemaRegistryApiClientInterface $schemaRegistryApi
      * @param integer           $maxRetries
      */
-    public function __construct(SchemaRegistryApi $schemaRegistryApi, int $maxRetries = 10)
+    public function __construct(KafkaSchemaRegistryApiClientInterface $schemaRegistryApi, int $maxRetries = 10)
     {
         parent::__construct($schemaRegistryApi);
         $this->maxRetries = $maxRetries;
@@ -92,23 +92,6 @@ class RegisterChangedSchemasCommand extends AbstractSchemaCommand
     }
 
     /**
-     * @param string $schemaName
-     * @param string $localSchema
-     * @return boolean
-     */
-    protected function isAlreadyRegistered(
-        string $schemaName,
-        string $localSchema
-    ): bool {
-        $version = $this->schemaRegistryApi->getVersionForSchema(
-            $schemaName,
-            $localSchema
-        );
-
-        return null !== $version;
-    }
-
-    /**
      * @param array        $avroFiles
      * @param SymfonyStyle $io
      * @param array        $failed
@@ -131,10 +114,14 @@ class RegisterChangedSchemasCommand extends AbstractSchemaCommand
             /** @var string $localSchema */
             $localSchema = json_encode($jsonDecoded);
 
-            $latestVersion = $this->schemaRegistryApi->getLatestSchemaVersion($schemaName);
+            try {
+                $latestVersion = $this->schemaRegistryApi->getLatestSubjectVersion($schemaName);
+            } catch (SubjectNotFoundException $e) {
+                $latestVersion = null;
+            }
 
             if (null !== $latestVersion) {
-                if (true === $this->isAlreadyRegistered($schemaName, $localSchema)) {
+                if (true === $this->schemaRegistryApi->isSchemaAlreadyRegistered($schemaName, $localSchema)) {
                     $io->writeln(sprintf('Schema %s has been skipped (no change)', $schemaName));
                     continue;
                 }
@@ -152,8 +139,7 @@ class RegisterChangedSchemasCommand extends AbstractSchemaCommand
                 $failed[$schemaName] = $schemaName;
                 continue;
             }
-
-            $this->schemaRegistryApi->createNewSchemaVersion($schema, $schemaName);
+            $this->schemaRegistryApi->registerNewSchemaVersion($schemaName, $schema);
 
             $succeeded[$schemaName] = [
                 'name' => $schemaName,
