@@ -4,7 +4,6 @@ services:
     build:
       context: dev/php
       args:
-        HOST_USER: ${USER}
         HOST_USER_ID: ${USER_ID}
     container_name: console-kafka-schema-registry-php
     hostname: console-kafka-schema-registry-php
@@ -18,6 +17,7 @@ services:
     tty: true
     secrets:
       - ssh_host_key
+
 secrets:
   ssh_host_key:
     file: ~/.ssh/id_rsa
