@@ -12,6 +12,11 @@ use SplFileInfo;
 
 class SchemaFileHelper
 {
+    /** @var string */
+    private const FIELDS_FIELD_KEY = 'fields';
+
+    /** @var string */
+    private const DOC_FIELD_KEY = 'doc';
 
     /**
      * @param string $filePath
@@ -74,5 +79,28 @@ class SchemaFileHelper
         }
 
         return $files;
+    }
+
+    /**
+     * @param array $schema
+     * @return bool
+     */
+    public static function checkDocCommentsOnSchemaTemplates(array $schema): bool
+    {
+        $fields = $schema[self::FIELDS_FIELD_KEY] ?? null;
+
+        if (false === is_array($fields) || 0 === count($fields)) {
+            return true;
+        }
+
+        foreach ($fields as $field) {
+            $doc = $field[self::DOC_FIELD_KEY] ?? null;
+
+            if (false === is_string($doc) || '' === trim($doc)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

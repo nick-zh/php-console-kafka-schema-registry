@@ -84,4 +84,88 @@ EOF
         self::assertEquals('test', SchemaFileHelper::getSchemaName(self::SCHEMA_FILE));
     }
 
+    public function testHasDocCommentsOnAllFields(): void {
+        self::assertFalse(
+            SchemaFileHelper::checkDocCommentsOnSchemaTemplates(json_decode(file_get_contents(self::SCHEMA_FILE), true))
+        );
+
+        file_put_contents(self::SCHEMA_FILE,
+<<<EOF
+{
+  "type": "record",
+  "name": "evolution",
+  "namespace": "com.landoop",
+  "doc": "This is a sample Avro schema to get you started. Please edit"
+}
+EOF
+        );
+
+        self::assertTrue(
+            SchemaFileHelper::checkDocCommentsOnSchemaTemplates(json_decode(file_get_contents(self::SCHEMA_FILE), true))
+        );
+
+        file_put_contents(self::SCHEMA_FILE,
+<<<EOF
+{
+  "type": "record",
+  "name": "evolution",
+  "namespace": "com.landoop",
+  "doc": "This is a sample Avro schema to get you started. Please edit",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string",
+      "doc": "some desc"
+    },
+    {
+      "name": "number1",
+      "type": "int",
+      "doc": "some desc"
+    },
+    {
+      "name": "number2",
+      "type": "float",
+      "doc": " "
+    }
+  ]
+}
+EOF
+        );
+
+        self::assertFalse(
+            SchemaFileHelper::checkDocCommentsOnSchemaTemplates(json_decode(file_get_contents(self::SCHEMA_FILE), true))
+        );
+
+        file_put_contents(self::SCHEMA_FILE,
+<<<EOF
+{
+  "type": "record",
+  "name": "evolution",
+  "namespace": "com.landoop",
+  "doc": "This is a sample Avro schema to get you started. Please edit",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string",
+      "doc": "some desc"
+    },
+    {
+      "name": "number1",
+      "type": "int",
+      "doc": "some desc"
+    },
+    {
+      "name": "number2",
+      "type": "float",
+      "doc": "some desc"
+    }
+  ]
+}
+EOF
+        );
+
+        self::assertTrue(
+            SchemaFileHelper::checkDocCommentsOnSchemaTemplates(json_decode(file_get_contents(self::SCHEMA_FILE), true))
+        );
+    }
 }
