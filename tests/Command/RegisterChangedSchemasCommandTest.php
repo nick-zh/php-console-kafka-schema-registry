@@ -10,6 +10,11 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * @covers \Jobcloud\SchemaConsole\Command\RegisterChangedSchemasCommand
+ * @covers \Jobcloud\SchemaConsole\Helper\SchemaFileHelper
+ * @covers \Jobcloud\SchemaConsole\Command\AbstractSchemaCommand
+ */
 class RegisterChangedSchemasCommandTest extends AbstractSchemaRegistryTestCase
 {
     protected const SCHEMA_DIRECTORY = '/tmp/testSchemas';
@@ -110,7 +115,7 @@ class RegisterChangedSchemasCommandTest extends AbstractSchemaRegistryTestCase
 
         $commandOutput = trim($commandTester->getDisplay());
 
-        self::assertRegExp('/^Successfully registered new version of schema /', $commandOutput);
+        self::assertMatchesRegularExpression('/^Successfully registered new version of schema /', $commandOutput);
         self::assertEquals(0, $commandTester->getStatusCode());
     }
 

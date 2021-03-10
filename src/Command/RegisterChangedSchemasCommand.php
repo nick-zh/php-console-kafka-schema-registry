@@ -92,10 +92,10 @@ class RegisterChangedSchemasCommand extends AbstractSchemaCommand
     }
 
     /**
-     * @param array        $avroFiles
-     * @param SymfonyStyle $io
-     * @param array        $failed
-     * @param array        $succeeded
+     * @param array<string, mixed> $avroFiles
+     * @param SymfonyStyle         $io
+     * @param array<string, mixed> $failed
+     * @param array<string, mixed> $succeeded
      * @return boolean
      */
     private function registerFiles(
@@ -108,7 +108,7 @@ class RegisterChangedSchemasCommand extends AbstractSchemaCommand
             /** @var string $fileContents */
             $fileContents = file_get_contents($avroFile);
 
-            /** @var array $jsonDecoded */
+            /** @var array<string, mixed> $jsonDecoded */
             $jsonDecoded = json_decode($fileContents);
 
             /** @var string $localSchema */

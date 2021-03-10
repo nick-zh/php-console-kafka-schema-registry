@@ -7,7 +7,11 @@ use Jobcloud\SchemaConsole\Tests\AbstractSchemaRegistryTestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class CheckAllSchemasAreValidAvroCommandTestTest extends AbstractSchemaRegistryTestCase
+/**
+ * @covers \Jobcloud\SchemaConsole\Command\CheckAllSchemasAreValidAvroCommand
+ * @covers \Jobcloud\SchemaConsole\Helper\SchemaFileHelper
+ */
+class CheckAllSchemasAreValidAvroCommandTest extends AbstractSchemaRegistryTestCase
 {
     protected const SCHEMA_DIRECTORY = '/tmp/testSchemas';
 
