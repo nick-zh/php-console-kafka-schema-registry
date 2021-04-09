@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Jobcloud\SchemaConsole\Command;
 
+use Jobcloud\Kafka\SchemaRegistryClient\Exception\SchemaRegistryExceptionInterface;
+use Psr\Http\Client\ClientExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use JsonException;
 
 class DeleteAllSchemasCommand extends AbstractSchemaCommand
 {
@@ -25,6 +28,9 @@ class DeleteAllSchemasCommand extends AbstractSchemaCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      * @return integer
+     * @throws ClientExceptionInterface
+     * @throws SchemaRegistryExceptionInterface
+     * @throws JsonException
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {

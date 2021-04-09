@@ -4,14 +4,16 @@ namespace Jobcloud\SchemaConsole\Command;
 
 use AvroSchema;
 use AvroSchemaParseException;
-use GuzzleHttp\Exception\RequestException;
+use Jobcloud\Kafka\SchemaRegistryClient\Exception\SchemaRegistryExceptionInterface;
 use Jobcloud\Kafka\SchemaRegistryClient\Exception\SubjectNotFoundException;
 use Jobcloud\Kafka\SchemaRegistryClient\KafkaSchemaRegistryApiClientInterface;
 use Jobcloud\SchemaConsole\Helper\SchemaFileHelper;
+use Psr\Http\Client\ClientExceptionInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use JsonException;
 
 class RegisterChangedSchemasCommand extends AbstractSchemaCommand
 {
@@ -52,7 +54,9 @@ class RegisterChangedSchemasCommand extends AbstractSchemaCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      * @return integer
-     * @throws RequestException
+     * @throws ClientExceptionInterface
+     * @throws SchemaRegistryExceptionInterface
+     * @throws JsonException
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {

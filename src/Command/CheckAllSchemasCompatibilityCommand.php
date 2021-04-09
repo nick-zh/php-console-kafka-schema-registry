@@ -2,12 +2,14 @@
 
 namespace Jobcloud\SchemaConsole\Command;
 
-use GuzzleHttp\Exception\RequestException;
+use Jobcloud\Kafka\SchemaRegistryClient\Exception\SchemaRegistryExceptionInterface;
+use Psr\Http\Client\ClientExceptionInterface;
 use Jobcloud\SchemaConsole\Helper\SchemaFileHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use JsonException;
 
 class CheckAllSchemasCompatibilityCommand extends AbstractSchemaCommand
 {
@@ -28,7 +30,7 @@ class CheckAllSchemasCompatibilityCommand extends AbstractSchemaCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      * @return integer
-     * @throws RequestException
+     * @throws ClientExceptionInterface
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -57,6 +59,9 @@ class CheckAllSchemasCompatibilityCommand extends AbstractSchemaCommand
      * @param array<string, mixed> $avroFiles
      * @param array<string, mixed> $failed
      * @return boolean
+     * @throws ClientExceptionInterface
+     * @throws SchemaRegistryExceptionInterface
+     * @throws JsonException
      */
     private function checkSchemas(array $avroFiles, array &$failed = []): bool
     {
