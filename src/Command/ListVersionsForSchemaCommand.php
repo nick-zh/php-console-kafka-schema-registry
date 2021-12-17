@@ -10,7 +10,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ListVersionsForSchemaCommand extends AbstractSchemaCommand
 {
-
     /**
      * @return void
      */
@@ -24,13 +23,12 @@ class ListVersionsForSchemaCommand extends AbstractSchemaCommand
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      * @return integer
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-
         /** @var string $schemaName */
         $schemaName = $input->getArgument('schemaName');
 

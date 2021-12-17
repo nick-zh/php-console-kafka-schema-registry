@@ -11,7 +11,6 @@ use Throwable;
 
 class GetSchemaByVersionCommand extends AbstractSchemaCommand
 {
-
     /**
      * @return void
      */
@@ -19,21 +18,20 @@ class GetSchemaByVersionCommand extends AbstractSchemaCommand
     {
         $this
             ->setName('kafka-schema-registry:fetch:schema')
-            ->setDescription('List all versions for given schema')
-            ->setHelp('List all versions for given schema')
+            ->setDescription('Get schema by version number')
+            ->setHelp('Get schema by version number')
             ->addArgument('schemaName', InputArgument::REQUIRED, 'Name of the schema')
             ->addArgument('schemaVersion', InputArgument::REQUIRED, 'Version of the schema')
             ->addArgument('outputFile', InputArgument::REQUIRED, 'Path to output file');
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      * @return integer
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-
         /** @var string $outputFile */
         $outputFile = $input->getArgument('outputFile');
 

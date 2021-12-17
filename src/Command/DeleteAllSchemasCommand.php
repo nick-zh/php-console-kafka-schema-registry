@@ -9,7 +9,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DeleteAllSchemasCommand extends AbstractSchemaCommand
 {
-
     /**
      * @return void
      */
@@ -22,13 +21,12 @@ class DeleteAllSchemasCommand extends AbstractSchemaCommand
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      * @return integer
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-
         $schemas = $this->schemaRegistryApi->getSubjects();
 
         foreach ($schemas as $schemaName) {

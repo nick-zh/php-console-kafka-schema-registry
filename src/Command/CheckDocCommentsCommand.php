@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Jobcloud\SchemaConsole\Command;
 
-use GuzzleHttp\Exception\RequestException;
 use Jobcloud\SchemaConsole\Helper\SchemaFileHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,10 +29,9 @@ class CheckDocCommentsCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      * @return integer
-     * @throws RequestException
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {

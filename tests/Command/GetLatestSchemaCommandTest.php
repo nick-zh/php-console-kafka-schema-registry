@@ -2,9 +2,7 @@
 
 namespace Jobcloud\SchemaConsole\Tests\Command;
 
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
+use Buzz\Exception\ClientException;
 use Jobcloud\Kafka\SchemaRegistryClient\KafkaSchemaRegistryApiClient;
 use Jobcloud\SchemaConsole\Command\GetLatestSchemaCommand;
 use Jobcloud\SchemaConsole\Tests\AbstractSchemaRegistryTestCase;
@@ -21,7 +19,7 @@ class GetLatestSchemaCommandTest extends AbstractSchemaRegistryTestCase
 {
     protected const SCHEMA_TEST_FILE = '/tmp/test.avsc';
 
-    public function testCommand():void
+    public function testCommand(): void
     {
         $schema = ['a' => 'b'];
 
@@ -49,13 +47,9 @@ class GetLatestSchemaCommandTest extends AbstractSchemaRegistryTestCase
         self::assertEquals(json_encode($schema, JSON_THROW_ON_ERROR), $outputFileContents);
     }
 
-    public function testMissingSchema():void
+    public function testMissingSchema(): void
     {
-        $clientException = new ClientException(
-            '',
-            new Request('POST', '/'),
-            new Response(404)
-        );
+        $clientException = new ClientException('some message', 404);
 
         $expectedSchemaName = 'SomeSchemaName';
 
@@ -82,11 +76,7 @@ class GetLatestSchemaCommandTest extends AbstractSchemaRegistryTestCase
 
     public function testUnknownClientErrorCodeThrowsException():void
     {
-        $clientException = new ClientException(
-            'ERROR MESSAGE',
-            new Request('POST', '/'),
-            new Response(401)
-        );
+        $clientException = new ClientException('ERROR MESSAGE', 401);
 
         /** @var MockObject|KafkaSchemaRegistryApiClient $schemaRegistryApi */
         $schemaRegistryApi = $this->makeMock(KafkaSchemaRegistryApiClient::class, [
@@ -107,7 +97,7 @@ class GetLatestSchemaCommandTest extends AbstractSchemaRegistryTestCase
         ]);
     }
 
-    public function testFailWriteToFile():void
+    public function testFailWriteToFile(): void
     {
         $failurePath = '..';
 

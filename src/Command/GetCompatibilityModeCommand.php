@@ -9,7 +9,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GetCompatibilityModeCommand extends AbstractSchemaCommand
 {
-
     /**
      * @return void
      */
@@ -22,7 +21,7 @@ class GetCompatibilityModeCommand extends AbstractSchemaCommand
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      * @return integer
      */

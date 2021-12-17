@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Jobcloud\SchemaConsole\Command;
 
-use GuzzleHttp\Exception\ClientException;
 use Jobcloud\SchemaConsole\Helper\SchemaFileHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,7 +11,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CheckCompatibilityCommand extends AbstractSchemaCommand
 {
-
     /**
      * @return void
      */
@@ -27,10 +25,9 @@ class CheckCompatibilityCommand extends AbstractSchemaCommand
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      * @return integer
-     * @throws ClientException
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {

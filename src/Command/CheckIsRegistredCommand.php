@@ -11,7 +11,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CheckIsRegistredCommand extends AbstractSchemaCommand
 {
-
     /**
      * @return void
      */
@@ -25,7 +24,7 @@ class CheckIsRegistredCommand extends AbstractSchemaCommand
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      * @return integer
      */

@@ -4,7 +4,6 @@ namespace Jobcloud\SchemaConsole\Command;
 
 use AvroSchema;
 use AvroSchemaParseException;
-use GuzzleHttp\Exception\RequestException;
 use Jobcloud\Kafka\SchemaRegistryClient\Exception\SubjectNotFoundException;
 use Jobcloud\Kafka\SchemaRegistryClient\KafkaSchemaRegistryApiClientInterface;
 use Jobcloud\SchemaConsole\Helper\SchemaFileHelper;
@@ -15,7 +14,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class RegisterChangedSchemasCommand extends AbstractSchemaCommand
 {
-
     /**
      * @var integer
      */
@@ -49,14 +47,12 @@ class RegisterChangedSchemasCommand extends AbstractSchemaCommand
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      * @return integer
-     * @throws RequestException
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-
         $io = new SymfonyStyle($input, $output);
 
         /** @var string $directory */
@@ -93,7 +89,7 @@ class RegisterChangedSchemasCommand extends AbstractSchemaCommand
 
     /**
      * @param array<string, mixed> $avroFiles
-     * @param SymfonyStyle         $io
+     * @param SymfonyStyle $io
      * @param array<string, mixed> $failed
      * @param array<string, mixed> $succeeded
      * @return boolean

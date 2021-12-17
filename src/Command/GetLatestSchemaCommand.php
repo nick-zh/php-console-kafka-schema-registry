@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jobcloud\SchemaConsole\Command;
 
-use GuzzleHttp\Exception\ClientException;
+use Buzz\Exception\ClientException;
 use Jobcloud\Kafka\SchemaRegistryClient\KafkaSchemaRegistryApiClientInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,7 +13,6 @@ use Throwable;
 
 class GetLatestSchemaCommand extends AbstractSchemaCommand
 {
-
     /**
      * @return void
      */
@@ -28,10 +27,9 @@ class GetLatestSchemaCommand extends AbstractSchemaCommand
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      * @return integer
-     * @throws ClientException
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
